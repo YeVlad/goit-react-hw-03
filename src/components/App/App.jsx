@@ -21,12 +21,18 @@ function App() {
     });
   }
 
+  function delContact(idToDel) {
+    setContacts((prevContacts) => {
+      return prevContacts.filter((contact) => contact.id != idToDel);
+    });
+  }
+
   return (
     <>
       <h1>Phonebook</h1>
       <ContactForm addContact={addContact} />
       <SearchBox value={search} onSearch={setSearch} />
-      <ContactList contacts={filterContacts} />
+      <ContactList contacts={filterContacts} delContact={delContact} />
     </>
   );
 }
