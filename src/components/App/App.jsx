@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import dateContacts from "../contacts.json";
 
@@ -8,7 +8,19 @@ import SearchBox from "../searchBox/searchBox";
 import ContactList from "../contactList/contactList";
 
 function App() {
-  const [contacts, setContacts] = useState(dateContacts);
+  const [contacts, setContacts] = useState(() => {
+    const savedContacts = window.localStorage.getItem("saved-contacts");
+
+    if (savedContacts !== null) {
+      return JSON.parse(savedContacts);
+    }
+    return dateContacts;
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem("saved-contacts", JSON.stringify(contacts));
+  }, [contacts]);
+
   const [search, setSearch] = useState("");
 
   const filterContacts = contacts.filter((contact) =>
